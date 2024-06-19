@@ -39,7 +39,7 @@
   - 일반 사용자는 부적절한 대댓글을 발견하면 신고할 수 있다. 신고를 하게 되면 해당 정보를 관리하는 DB에 저장이 되며 관리자가 확인 후 해당 게시글을 제거할 수 있다.
 
 ## ERD 
-![ERD](doc/img/erd.png)
+![ERD](src/main/resources/erd/online_community.png)
 
 ## Trouble Shooting
 [go to the trouble shooting section](doc/TROUBLE_SHOOTING.md)
