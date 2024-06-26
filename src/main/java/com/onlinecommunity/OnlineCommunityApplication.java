@@ -1,4 +1,4 @@
-package com.onlinecommunity.onlinecommunity;
+package com.onlinecommunity;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;

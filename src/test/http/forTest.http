@@ -1,0 +1,73 @@
+### 일반 유저 회원가입 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.) (닉네임 중복 X, 닉네임은 ADMIN_으로 시작해야 하며 길이 제한은 2이상 12이하이다.)
+POST http://localhost:8085/auth/signup
+Content-Type: application/json
+
+{
+  "signupid": "sepsepsep",
+  "password": "chachacha",
+  "nickname": "Hello"
+}
+
+### 관리자 회원가입 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.) (닉네임 중복 X, 닉네임은 ADMIN_으로 시작해야 하며 길이 제한은 2이상 12이하이다.)
+POST http://localhost:8085/auth/create_admin
+Content-Type: application/json
+
+{
+  "signupid": "sepsepsep",
+  "password": "chachacha",
+  "nickname": "Hello"
+}
+
+### 로그인 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.)
+POST http://localhost:8085/auth/signin
+Content-Type: application/json
+
+{
+  "signupid": "uuuu9999",
+  "password": "8888uuuu"
+}
+
+### 닉네임 수정 (닉네임 중복 X, 닉네임은 관리자일 경우 ADMIN_으로 시작해야 하며 길이 제한은 2이상 12이하이다.)
+PUT http://localhost:8085/auth/update/nickname
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzE5NDExMTU0LCJleHAiOjE3MTk0MTQ3NTR9.l47vSSYhJ3d2BsUk8hxI3NnO4B93Zpy7j3YsQKb-xHAFBe_v6ynViXdyIiiFXnkf1eKNLvA3D040-tYNuftcTg
+Content-Type: application/json
+
+{
+  "nickname": "ADMIN_안안안안안ㄴ"
+}
+
+### 비밀번호 변경 (패스워드 길이제한은 8이상 20이하이다.)
+PUT http://localhost:8085/auth/update/password
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1dXV1OTk5OSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE3MTk0MTEyMDIsImV4cCI6MTcxOTQxNDgwMn0.osRcVRXzhQc-I8Qb9eb1EAlGznSQBBHG_SjwwddGUjNeznkP33HbQbQDEGweJuGSA1sS-LeS9fbBEClJPH6s7w
+Content-Type: application/json
+
+{
+  "password": "8888uuuu"
+}
+
+### 유저 계정 잠금 (아이디 길이 제한은 6이상 20이하이다.) (관리자 계정으로 유저 계정을 잠그는 것만 가능)
+PUT http://localhost:8085/auth/lock
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxcXFxcXFxcSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzE5NDExNTIxLCJleHAiOjE3MTk0MTUxMjF9.GL3jBIWhkz6fHk5KDjq2HTLsAZ35iMzYJCg9JGzHpXHDHFpnjFCUfO9pe57zwrxQmZWv4jnMRu2VWzJodsz4Bw
+Content-Type: application/json
+
+{
+  "signupid": "uuuu9999"
+}
+
+### 유저 계정 잠금 해제 (아이디 길이 제한은 6이상 20이하이다.) (관리자 계정으로 유저 계정을 잠금 해제하는 것만 가능)
+PUT http://localhost:8085/auth/unlock
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxcXFxcXFxcSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzE5NDExNTIxLCJleHAiOjE3MTk0MTUxMjF9.GL3jBIWhkz6fHk5KDjq2HTLsAZ35iMzYJCg9JGzHpXHDHFpnjFCUfO9pe57zwrxQmZWv4jnMRu2VWzJodsz4Bw
+Content-Type: application/json
+
+{
+  "signupid": "admin001"
+}
+
+### 회원탈퇴 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.)
+DELETE http://localhost:8085/auth/delete
+Content-Type: application/json
+
+{
+  "signupid": "uuuu999454554459",
+  "password": "8888uuuu"
+}
