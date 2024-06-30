@@ -46,22 +46,18 @@ public class Member {
         }
     }
 
-    // 닉네임 변경
-    public void changeNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    // 암호 변경
-    public void changePassword(String password) {
+    // 닉네임, 패스워드를 변경하기 위해서 사용하는 함수
+    public void change(String password, String nickname) {
         this.password = password;
+        this.nickname = nickname;
     }
 
     // 계정 잠금
     public void lockAccount() {
-        if(this.role == MemberRole.ROLE_ADMIN) {
+        if (this.role == MemberRole.ROLE_ADMIN) {
             throw new RuntimeException("관리자 계정은 잠금 관련 설정을 할 수 없습니다.");
         }
-        if(this.status == MemberStatus.LOCK) {
+        if (this.status == MemberStatus.LOCK) {
             throw new RuntimeException("현재 계정은 이미 잠금 상태입니다.");
         }
         this.status = MemberStatus.LOCK;
@@ -69,10 +65,10 @@ public class Member {
 
     // 계정 잠금 해제
     public void unLockAccount() {
-        if(this.role == MemberRole.ROLE_ADMIN) {
+        if (this.role == MemberRole.ROLE_ADMIN) {
             throw new RuntimeException("관리자 계정은 잠금 관련 설정을 할 수 없습니다.");
         }
-        if(this.status == MemberStatus.UNLOCK) {
+        if (this.status == MemberStatus.UNLOCK) {
             throw new RuntimeException("현재 계정은 이미 잠금 해제 상태입니다.");
         }
         this.status = MemberStatus.UNLOCK;

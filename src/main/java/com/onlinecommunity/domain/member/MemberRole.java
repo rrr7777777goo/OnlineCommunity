@@ -15,7 +15,7 @@ public enum MemberRole {
     }
 
     public static MemberRole getEnum(String name) {
-        if(name.compareTo("ROLE_USER") == 0) {
+        if (name.compareTo("ROLE_USER") == 0) {
             return ROLE_USER;
         } else if (name.compareTo("ROLE_ADMIN") == 0) {
             return ROLE_ADMIN;

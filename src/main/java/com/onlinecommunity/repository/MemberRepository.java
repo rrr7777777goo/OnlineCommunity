@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
+    Optional<Member> findById(int id);
+
     Optional<Member> findBySignupid(String signupid);
 
     // @Query(value="select m.id as id, m.signupid as signupid \n" +

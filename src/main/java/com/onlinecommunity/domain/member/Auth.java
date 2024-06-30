@@ -1,131 +1,68 @@
 package com.onlinecommunity.domain.member;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Auth {
-    private static final String firstAdminNickname = "ADMIN_";
 
     // 로그인용 클래스
     @Data
     public static class SignIn {
+        @Pattern(regexp="[a-z0-9][a-z0-9_-]{5,19}", message = "아이디 작성은 첫번째 문자부터는 알파벳 소문자와 숫자가 사용이 가능하며 두번째 문자부터는 _와 -도 사용이 가능합니다. 그리고 길이 제한은 6자리 이상, 20자리 이하입니다. ")
         private String signupid; // 아이디
+        @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!?@#$%^&*().,_-]{8,20}", message = "비밀번호는 영어(대소문자 모두 가능)와 숫자, 특수문자(!?@#$%^&*().,_-)를 이용해서 작성해야 하며 이 때 영어와 숫자를 최소 1개씩 포함되게 작성해야 합니다. 그리고 길이 제한은 8자리 이상, 20자리 이하입니다. ")
         private String password; // 비밀번호
-
-        // 현재 클래스가 가지고 있는 값의 유효성 검사
-        public void isValid() {
-            isValidSignupid(signupid);
-            isValidPassword(password);
-        }
     }
 
     // 회원가입용 클래스
     @Data
     public static class SignUp {
+        @Pattern(regexp="[a-z0-9][a-z0-9_-]{5,19}", message = "아이디 작성은 첫번째 문자부터는 알파벳 소문자와 숫자가 사용이 가능하며 두번째 문자부터는 _와 -도 사용이 가능합니다. 그리고 길이 제한은 6자리 이상, 20자리 이하입니다. ")
         private String signupid; // 아이디
+        @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!?@#$%^&*().,_-]{8,20}", message = "비밀번호는 영어(대소문자 모두 가능)와 숫자, 특수문자(!?@#$%^&*().,_-)를 이용해서 작성해야 하며 이 때 영어와 숫자를 최소 1개씩 포함되게 작성해야 합니다. 그리고 길이 제한은 8자리 이상, 20자리 이하입니다. ")
         private String password; // 비밀번호
+        @Pattern(regexp="[A-Za-z0-9가-힣_-]{2,12}", message = "닉네임은 한글,영어(대소문자 모두 가능) ,숫자, 특수문자 _와 -를 조합해서 작성이 가능합니다. 그리고 길이 제한은 2자리 이상, 12자리 이하입니다. ")
         private String nickname; // 닉네임
 
-        // 현재 클래스가 가지고 있는 값의 유효성 검사
-        public void isValid(boolean isUserSignup) {
-            isValidSignupid(signupid);
-            isValidPassword(password);
-            isValidNickname(nickname, isUserSignup);
-        }
 
         // 현재 가지고 있는 값들을 기반으로 Member 객체 반환
-        public Member toEntity(boolean isUserSignup) {
+        public Member toEntity(boolean isAdminSignup) {
             return Member.builder()
                     .signupid(this.signupid)
                     .password(this.password)
                     .nickname(this.nickname)
-                    .role(isUserSignup ? MemberRole.ROLE_USER : MemberRole.ROLE_ADMIN) // 조건에 맞는 유저 속성을 넣기
+                    .role(isAdminSignup ? MemberRole.ROLE_ADMIN : MemberRole.ROLE_USER) // 조건에 맞는 유저 속성을 넣기
                     .insertdate(LocalDateTime.now()) // 현재 시간을 넣기
                     .status(MemberStatus.UNLOCK)
                     .build();
         }
     }
 
-    // 닉네임 변경용 클래스
+    // 계정의 패스워드 또는 닉네임 변경용 클래스
     @Data
-    public static class ChangeNickname {
-        private String nickname;
-
-        public void isValid(MemberRole memberRole) {
-            isValidNickname(this.nickname, memberRole == MemberRole.ROLE_USER ? true : false);
-        }
-    }
-
-    // 패스워드 변경용 클래스
-    @Data
-    public static class ChangePassword {
+    public static class Change {
+        @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!?@#$%^&*().,_-]{8,20}", message = "비밀번호는 영어(대소문자 모두 가능)와 숫자, 특수문자(!?@#$%^&*().,_-)를 이용해서 작성해야 하며 이 때 영어와 숫자를 최소 1개씩 포함되게 작성해야 합니다. 그리고 길이 제한은 8자리 이상, 20자리 이하입니다. ")
         private String password;
-
-        public void isValid() {
-            isValidPassword(this.password);
-        }
+        @Pattern(regexp="[A-Za-z0-9가-힣_-]{2,12}", message = "닉네임은 한글,영어(대소문자 모두 가능) ,숫자, 특수문자 _와 -를 조합해서 작성이 가능합니다. 그리고 길이 제한은 2자리 이상, 12자리 이하입니다. ")
+        private String nickname;
     }
+
 
     // 관리자가 잠그려는 아이디 정보를 불러올 때 사용하는 클래스
     @Data
     public static class IdClass {
+        @Pattern(regexp="[a-z0-9][a-z0-9_-]{5,19}", message = "아이디 작성은 첫번째 문자부터는 알파벳 소문자와 숫자가 사용이 가능하며 두번째 문자부터는 _와 -도 사용이 가능합니다. 그리고 길이 제한은 6자리 이상, 20자리 이하입니다. ")
         private String signupid;
-
-        public void isValid() {
-            isValidSignupid(signupid);
-        }
     }
 
     // 계정의 인덱스 번호(id), 아이디(signupid)를 가져올 때 사용하는 클래스
     public interface IdInterface {
         int getId();
         String getSignupid();
-    }
-
-    // 아이디 유효성 검사
-    static private void isValidSignupid(String signupid) {
-        final int minLength_signupid = 6; // 아이디 최소 길이
-        final int maxLength_signupid = 20; // 아이디 최대 길이
-
-        // 아이디 유효성 검사
-        if(signupid == null || signupid.length() < minLength_signupid || signupid.length() > maxLength_signupid) {
-            throw new RuntimeException("아이디의 길이는 " + minLength_signupid + "이상 " + maxLength_signupid + "이하여야 합니다.");
-        }
-    }
-
-    // 패스워드 유효성 검사
-    static private void isValidPassword(String password) {
-        final int minLength_password = 8; // 비밀번호 최소 길이
-        final int maxLength_password = 20; // 비밀번호 최대 길이
-
-        // 비밀번호 유효성 검사
-        if(password == null || password.length() < minLength_password ||password.length() > maxLength_password) {
-            throw new RuntimeException("패스워드의 길이는 " + minLength_password + "이상 " + maxLength_password + "이하여야 합니다.");
-        }
-    }
-
-    // 닉네임 유효성 검사
-    static private void isValidNickname(String nickname, boolean isUserSignup) {
-        if(isUserSignup) { // 일반 사용자 계정 생성
-            // 닉네임 초성 검사 (ADMIN_으로 시작할 수 없다.)
-            if(nickname.indexOf(firstAdminNickname) == 0) {
-                throw new RuntimeException("닉네임은 '" + firstAdminNickname + "'으로 시작할 수 없습니다.");
-            }
-        } else { // 관리자 계정 생성
-            // 닉네임 초성 검사 (ADMIN_으로 시작해야 한다.)
-            if(nickname.indexOf(firstAdminNickname) != 0) {
-                throw new RuntimeException("관리자의 닉네임은 '" + firstAdminNickname + "'으로 시작해야 합니다.");
-            }
-        }
-
-        final int minLength_nickname = 2; // 닉네임 최소 길이
-        final int maxLength_nickname = 12; // 닉네임 최대 길이
-
-        // 닉네임 유효성 검사
-        if(nickname == null || nickname.length() < minLength_nickname || nickname.length() > maxLength_nickname) {
-            throw new RuntimeException("닉네임의 길이는 " + minLength_nickname + "이상 " + maxLength_nickname + "이하여야 합니다.");
-        }
     }
 }
