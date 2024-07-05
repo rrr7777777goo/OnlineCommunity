@@ -12,11 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Optional<Member> findBySignupid(String signupid);
 
-    // @Query(value="select m.id as id, m.signupid as signupid \n" +
-    //         " from com.onlinecommunity.domain.member.Member as m \n" +
-    //         " where m.signupid = ?1")
-    // Optional<Auth.IdInterface> findidBySignupid(String signupid);
-
     boolean existsBySignupid(String signupid);
 
     boolean existsByNickname(String nickname);

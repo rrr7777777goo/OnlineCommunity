@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                         "/auth/signup_admin",
                         "/auth/signin",
                         "/auth/information",
-                        "/auth/delete"
+                        "/auth/delete",
+                        "topic/list"
                 ).permitAll().anyRequest().authenticated())
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
