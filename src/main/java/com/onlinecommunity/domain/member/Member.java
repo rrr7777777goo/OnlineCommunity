@@ -3,11 +3,13 @@ package com.onlinecommunity.domain.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
 @Builder
 @Entity(name = "user")
+@DynamicUpdate
 @Getter
 @ToString
 @NoArgsConstructor
@@ -46,10 +48,14 @@ public class Member {
         }
     }
 
-    // 닉네임, 패스워드를 변경하기 위해서 사용하는 함수
-    public void change(String password, String nickname) {
-        this.password = password;
+    // 닉네임을 변경하기 위해서 사용하는 함수
+    public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    // 패스워드를 변경하기 위해서 사용하는 함수
+    public void changePassword(String password) {
+        this.password = password;
     }
 
     // 계정 잠금

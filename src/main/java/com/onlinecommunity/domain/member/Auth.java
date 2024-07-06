@@ -1,11 +1,8 @@
 package com.onlinecommunity.domain.member;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Auth {
@@ -43,15 +40,19 @@ public class Auth {
         }
     }
 
-    // 계정의 패스워드 또는 닉네임 변경용 클래스
+    // 계정의 정보 변경용 클래스 (패스워드는 따로 변경한다.)
     @Data
-    public static class Change {
-        @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!?@#$%^&*().,_-]{8,20}", message = "비밀번호는 영어(대소문자 모두 가능)와 숫자, 특수문자(!?@#$%^&*().,_-)를 이용해서 작성해야 하며 이 때 영어와 숫자를 최소 1개씩 포함되게 작성해야 합니다. 그리고 길이 제한은 8자리 이상, 20자리 이하입니다. ")
-        private String password;
+    public static class ChangeUserInfo {
         @Pattern(regexp="[A-Za-z0-9가-힣_-]{2,12}", message = "닉네임은 한글,영어(대소문자 모두 가능) ,숫자, 특수문자 _와 -를 조합해서 작성이 가능합니다. 그리고 길이 제한은 2자리 이상, 12자리 이하입니다. ")
         private String nickname;
     }
 
+    // 계정의 암호 변경용 클래스
+    @Data
+    public static class ChangePassword {
+        @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!?@#$%^&*().,_-]{8,20}", message = "비밀번호는 영어(대소문자 모두 가능)와 숫자, 특수문자(!?@#$%^&*().,_-)를 이용해서 작성해야 하며 이 때 영어와 숫자를 최소 1개씩 포함되게 작성해야 합니다. 그리고 길이 제한은 8자리 이상, 20자리 이하입니다. ")
+        private String password;
+    }
 
     // 관리자가 잠그려는 아이디 정보를 불러올 때 사용하는 클래스
     @Data
