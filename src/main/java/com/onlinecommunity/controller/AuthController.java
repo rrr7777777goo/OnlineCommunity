@@ -3,6 +3,7 @@ package com.onlinecommunity.controller;
 import com.onlinecommunity.domain.member.Auth;
 import com.onlinecommunity.service.MemberService;
 import com.onlinecommunity.security.TokenProvider;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,14 @@ public class AuthController {
     private final TokenProvider tokenProvider;
 
     // 일반 사용자 회원가입
-    @PostMapping("/signup_user")
+    @PostMapping("/signup-user")
     public ResponseEntity<?> signupUser(@Validated @RequestBody Auth.SignUp request) {
         var result = this.memberService.register(request, false); // 일반 사용자 계정 생성시엔 boolean 변수를 false로 전달한다.
         return ResponseEntity.ok(result);
     }
 
     // 관리자 회원가입
-    @PostMapping("/signup_admin")
+    @PostMapping("/signup-admin")
     public ResponseEntity<?> signupAdmin(@Validated @RequestBody Auth.SignUp request) {
         var result = this.memberService.register(request, true); // 관리자 계정 생성시엔 boolean 변수를 true로 전달한다.
         return ResponseEntity.ok(result);
@@ -44,23 +45,30 @@ public class AuthController {
     }
 
     // 현재 로그인중인 사용자의 정보 가져오기
-    @GetMapping("/signin_information")
+    @GetMapping("/signin-information")
     public ResponseEntity<?> getSigninUserInformation() {
         var result = this.memberService.getSigninUserInformation();
         return ResponseEntity.ok(result);
     }
 
-    // 특정 아이디를 가진 사용자의 정보 가져오기
+    // 고유번호를 기반으로 사용자의 정보 가져오기
     @GetMapping("/information")
-    public ResponseEntity<?> getUserInforamtion(@RequestParam int id) {
+    public ResponseEntity<?> getUserInforamtion(@RequestParam @PositiveOrZero int id) {
         var result = this.memberService.getUserInformation(id);
         return ResponseEntity.ok(result);
     }
 
-    // 닉네임 수정 or 비밀번호 변경 (동시에 변경도 가능)
-    @PutMapping("/update")
-    public ResponseEntity<?> updateNickname(@Validated @RequestBody Auth.Change request) {
-        var result = this.memberService.changePasswordOrNickname(request);
+    // 사용자의 정보 수정 (현재는 닉네임 변경을 위해서 사용된다.)
+    @PutMapping("/information")
+    public ResponseEntity<?> updateUserInformation(@Validated @RequestBody Auth.ChangeUserInfo request) {
+        var result = this.memberService.updateUserInformation(request);
+        return ResponseEntity.ok(result);
+    }
+
+    // 암호 수정
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@Validated @RequestBody Auth.ChangePassword request) {
+        var result = this.memberService.changePassword(request);
         return ResponseEntity.ok(result);
     }
 
@@ -80,8 +88,8 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
-    // 자신의 계정 삭제 (회원탈퇴)
-    @DeleteMapping("delete")
+    // 계정 삭제 (회원탈퇴)
+    @DeleteMapping("withdraw")
     public ResponseEntity<?> delete(@Validated @RequestBody Auth.SignIn request) {
         var result = this.memberService.delete(request);
         return ResponseEntity.ok(result);

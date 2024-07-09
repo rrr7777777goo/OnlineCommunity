@@ -30,11 +30,11 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request.requestMatchers(
-                        "/auth/signup_user",
-                        "/auth/signup_admin",
+                        "/auth/signup-user",
+                        "/auth/signup-admin",
                         "/auth/signin",
                         "/auth/information",
-                        "/auth/delete",
+                        "/auth/withdraw",
                         "topic/list"
                 ).permitAll().anyRequest().authenticated())
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);

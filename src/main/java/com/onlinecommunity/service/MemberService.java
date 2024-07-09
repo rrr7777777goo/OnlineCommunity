@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -37,7 +38,7 @@ public class MemberService {
         return result;
     }
 
-    // 아이디를 기반으로 유저 정보 가져오기
+    // 아이디를 기반으로 유저 정보(고유번호, 아이디) 가져오기
     public Auth.IdInterface loadUserBySignupid(String signupid) {
         var member = this.memberRepository.findBySignupid(signupid)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 ID입니다. -> " + signupid));
@@ -107,13 +108,14 @@ public class MemberService {
     // 고유번호를 기반으로 사용자 정보 출력하기
     public Member getUserInformation(int id) {
         var user = this.memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + id));
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 고유 번호입니다. -> " + id));
 
         return user;
     }
 
-    // 현재 로그인한 계정의 암호 또는 닉네임 변경하기
-    public Member changePasswordOrNickname(Auth.Change change) {
+    // 현재 로그인한 유저의 닉네임 변경하기
+    @Transactional
+    public Member updateUserInformation(Auth.ChangeUserInfo change) {
         var user = getSigninUserInformation();
 
         // 현재 바꾸려는 닉네임이 이미 다른 사람이 사용중인 닉네임인지 확인
@@ -122,26 +124,34 @@ public class MemberService {
             throw new RuntimeException("이미 존재하는 닉네임입니다. -> " + change.getNickname() + " " + user.getNickname());
         }
 
-        user.change(this.passwordEncoder.encode(change.getPassword()), change.getNickname());
-        this.memberRepository.save(user);
+        user.changeNickname(change.getNickname());
+        return user;
+    }
+
+    // 현재 로그인한 유저의 패스워드 변경하기
+    @Transactional
+    public Member changePassword(Auth.ChangePassword change) {
+        var user = getSigninUserInformation();
+
+        user.changePassword(this.passwordEncoder.encode(change.getPassword()));
         return user;
     }
 
     // 계정 잠금 설정
+    @Transactional
     public Member lockUserAccount(Auth.IdClass idClass) {
         var user = this.memberRepository.findBySignupid(idClass.getSignupid())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + idClass.getSignupid()));
         user.lockAccount();
-        this.memberRepository.save(user);
         return user;
     }
 
     // 계정 잠금 해제 설정
+    @Transactional
     public Member unLockUserAccount(Auth.IdClass idClass) {
         var user = this.memberRepository.findBySignupid(idClass.getSignupid())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + idClass.getSignupid()));
         user.unLockAccount();
-        this.memberRepository.save(user);
         return user;
     }
 

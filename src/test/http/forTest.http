@@ -1,5 +1,5 @@
 ### 일반 사용자 회원가입 (아이디 중복 X, 아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.) (닉네임 중복 X, 길이 제한은 2이상 12이하이다.)
-POST http://localhost:8085/auth/signup_user
+POST http://localhost:8085/auth/signup-user
 Content-Type: application/json
 
 {
@@ -9,13 +9,13 @@ Content-Type: application/json
 }
 
 ### 관리자 회원가입 (아이디 중복 X, 아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.) (닉네임 중복 X, 길이 제한은 2이상 12이하이다.)
-POST http://localhost:8085/auth/signup_admin
+POST http://localhost:8085/auth/signup-admin
 Content-Type: application/json
 
 {
-  "signupid": "admin001",
+  "signupid": "admin002",
   "password": "admin0101",
-  "nickname": "ADMINADMIN"
+  "nickname": "ADMINADMIN2"
 }
 
 ### 로그인 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.)
@@ -23,54 +23,61 @@ POST http://localhost:8085/auth/signin
 Content-Type: application/json
 
 {
-  "signupid": "admin001",
-  "password": "admin0101"
+  "signupid": "user001",
+  "password": "abcd001!?"
 }
 
 ### 현재 로그인중인 사용자 정보 가져오기 (비밀번호 같은 민감한 정보는 반환되지 않습니다.)
-GET http://localhost:8085/auth/signin_information
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcxOTkxMTMxNiwiZXhwIjoxNzE5OTE0OTE2fQ.k5M4sirFTNQVsS0yrTE3Av6F_xMxyz_SB09YAPvVDFvWp1KdhnH9AKshH9hDEWGnQtV6A07H77oOj3QxaBuBbA
+GET http://localhost:8085/auth/signin-information
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMDIzMDEyNywiZXhwIjoxNzIwMjMzNzI3fQ.FSE4yQhGRYIR8vDQJDDNlk1Q6ZZcc7yQUGuFAFaZGPlXpQg0mXfl7RV6MWH8E9Y0q9RlR9ogCpM3zOBf5xZIjA
 
 ### 사용자 고유 번호를 기반으로 다른 사용자 정보 가져오기 (로그인 필요 x)
-GET http://localhost:8085/auth/information?id=18
+GET http://localhost:8085/auth/information?id=3
 
-
-### 비밀번호 또는 닉네임 변경 (패스워드 길이제한은 8이상 20이하이다.)  (닉네임 중복 X, 길이 제한은 2이상 12이하이다.)
-PUT http://localhost:8085/auth/update
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcxOTkxMTMxNiwiZXhwIjoxNzE5OTE0OTE2fQ.k5M4sirFTNQVsS0yrTE3Av6F_xMxyz_SB09YAPvVDFvWp1KdhnH9AKshH9hDEWGnQtV6A07H77oOj3QxaBuBbA
+### 사용자 정보 변경 (현재는 닉네임 변경을 위해 사용된다.) (닉네임 중복 X, 길이 제한은 2이상 12이하이다.)
+PUT http://localhost:8085/auth/information
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMDUwODI2MiwiZXhwIjoxNzIwNTExODYyfQ.8Go1FaelvG1sGn7TKcxtuOPjV9WOyuVEe98HpP4asXd6vVvk4JXG47BFl2Oj6WP5YO6lMsrKzDAhUu8NPs52tg
 Content-Type: application/json
 
 {
-  "password": "abcd001!?",
-  "nickname": "김치사발면"
+  "nickname": "튀김우동"
+}
+
+### 패스워드 변경 (패스워드 길이제한은 8이상 20이하이다.)
+PUT http://localhost:8085/auth/password
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMDIzMDEyNywiZXhwIjoxNzIwMjMzNzI3fQ.FSE4yQhGRYIR8vDQJDDNlk1Q6ZZcc7yQUGuFAFaZGPlXpQg0mXfl7RV6MWH8E9Y0q9RlR9ogCpM3zOBf5xZIjA
+Content-Type: application/json
+
+{
+  "password": "1234abcd"
 }
 
 
 ### 유저 계정 잠금 (아이디 길이 제한은 6이상 20이하이다.) (관리자 계정으로 유저 계정을 잠그는 것만 가능)
 PUT http://localhost:8085/auth/lock
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxcXFxcXFxcSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzE5NDExNTIxLCJleHAiOjE3MTk0MTUxMjF9.GL3jBIWhkz6fHk5KDjq2HTLsAZ35iMzYJCg9JGzHpXHDHFpnjFCUfO9pe57zwrxQmZWv4jnMRu2VWzJodsz4Bw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwMjMwNzg4LCJleHAiOjE3MjAyMzQzODh9.mB1956jbbQTpJpHgkhIfN3relCnSy6zZworKnLULz5dEWe4M4cBH9gyPd2T2bwnZl01EWDwG5ZHgXtPRBRafSw
 Content-Type: application/json
 
 {
-  "signupid": "uuuu9999"
+  "signupid": "user001"
 }
 
 ### 유저 계정 잠금 해제 (아이디 길이 제한은 6이상 20이하이다.) (관리자 계정으로 유저 계정을 잠금 해제하는 것만 가능)
 PUT http://localhost:8085/auth/unlock
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxcXFxcXFxcSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzE5NDExNTIxLCJleHAiOjE3MTk0MTUxMjF9.GL3jBIWhkz6fHk5KDjq2HTLsAZ35iMzYJCg9JGzHpXHDHFpnjFCUfO9pe57zwrxQmZWv4jnMRu2VWzJodsz4Bw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwMjMwNzg4LCJleHAiOjE3MjAyMzQzODh9.mB1956jbbQTpJpHgkhIfN3relCnSy6zZworKnLULz5dEWe4M4cBH9gyPd2T2bwnZl01EWDwG5ZHgXtPRBRafSw
 Content-Type: application/json
 
 {
-  "signupid": "admin001"
+  "signupid": "user001"
 }
 
 ### 회원탈퇴 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.)
-DELETE http://localhost:8085/auth/delete
+DELETE http://localhost:8085/auth/withdraw
 Content-Type: application/json
 
 {
-  "signupid": "uuuu999454554459",
-  "password": "8888uuuu"
+  "signupid": "user001",
+  "password": "abcd001!?"
 }
 
 ### 새로운 게시판 주제 생성 (관리자만 생성 가능, 이름 중복 불가능, 이름 길이 제한 : 2 이상 20 이하)
