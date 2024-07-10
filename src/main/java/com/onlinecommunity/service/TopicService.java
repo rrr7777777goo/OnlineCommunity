@@ -7,6 +7,7 @@ import com.onlinecommunity.domain.topic.Topic;
 import com.onlinecommunity.repository.TopicRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +36,7 @@ public class TopicService {
         return result;
     }
 
-    public List<Topic> getTopics(Pageable pageable, String keyword) {
+    public Page<Topic> getTopics(Pageable pageable, String keyword) {
         var result = topicRepository.findAllByNameStartingWithOrderByNameAsc(pageable, getKeyword(keyword));
         return result;
     }

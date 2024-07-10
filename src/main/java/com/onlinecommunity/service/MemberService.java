@@ -23,9 +23,9 @@ public class MemberService {
     // 회원가입 (isAdminSignup 매개변수가 true면 관리자 계정 회원가입, false면 일반 사용자 회원가입)
     public Member register(Auth.SignUp member, boolean isAdminSignup) {
 
-        boolean exists = this.memberRepository.existsBySignupid(member.getSignupid());
+        boolean exists = this.memberRepository.existsBySignupId(member.getSignupId());
         if (exists) {
-            throw new RuntimeException("이미 존재하는 ID입니다. -> " + member.getSignupid());
+            throw new RuntimeException("이미 존재하는 ID입니다. -> " + member.getSignupId());
         }
         exists = this.memberRepository.existsByNickname(member.getNickname());
         if (exists) {
@@ -40,7 +40,7 @@ public class MemberService {
 
     // 아이디를 기반으로 유저 정보(고유번호, 아이디) 가져오기
     public Auth.IdInterface loadUserBySignupid(String signupid) {
-        var member = this.memberRepository.findBySignupid(signupid)
+        var member = this.memberRepository.findBySignupId(signupid)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 ID입니다. -> " + signupid));
         member.checkStatus(); // 계정 잠금여부 확인
 
@@ -50,8 +50,8 @@ public class MemberService {
                 return member.getId();
             }
             @Override
-            public String getSignupid() {
-                return member.getSignupid();
+            public String getSignupId() {
+                return member.getSignupId();
             }
         };
     }
@@ -59,8 +59,8 @@ public class MemberService {
     // 입력받은 아이디, 비밀번호를 기반으로 유저정보 가져오기 (로그인)
     public Member authenticate(Auth.SignIn member) {
 
-        var user = this.memberRepository.findBySignupid(member.getSignupid())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + member.getSignupid()));
+        var user = this.memberRepository.findBySignupId(member.getSignupId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + member.getSignupId()));
 
         if(!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
@@ -80,8 +80,8 @@ public class MemberService {
     public Member getSigninUserInformation() {
         Auth.IdInterface currentIdInterface = getIdInterface();
 
-        var user = this.memberRepository.findBySignupid(currentIdInterface.getSignupid())
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 ID입니다. -> " + currentIdInterface.getSignupid()));
+        var user = this.memberRepository.findBySignupId(currentIdInterface.getSignupId())
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 ID입니다. -> " + currentIdInterface.getSignupId()));
 
         return user;
     }
@@ -124,7 +124,7 @@ public class MemberService {
             throw new RuntimeException("이미 존재하는 닉네임입니다. -> " + change.getNickname() + " " + user.getNickname());
         }
 
-        user.changeNickname(change.getNickname());
+        user.changeInformation(change.getNickname());
         return user;
     }
 
@@ -140,8 +140,8 @@ public class MemberService {
     // 계정 잠금 설정
     @Transactional
     public Member lockUserAccount(Auth.IdClass idClass) {
-        var user = this.memberRepository.findBySignupid(idClass.getSignupid())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + idClass.getSignupid()));
+        var user = this.memberRepository.findBySignupId(idClass.getSignupId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + idClass.getSignupId()));
         user.lockAccount();
         return user;
     }
@@ -149,17 +149,17 @@ public class MemberService {
     // 계정 잠금 해제 설정
     @Transactional
     public Member unLockUserAccount(Auth.IdClass idClass) {
-        var user = this.memberRepository.findBySignupid(idClass.getSignupid())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + idClass.getSignupid()));
-        user.unLockAccount();
+        var user = this.memberRepository.findBySignupId(idClass.getSignupId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + idClass.getSignupId()));
+        user.unlockAccount();
         return user;
     }
 
     // 계정 삭제
     public String delete(Auth.SignIn member) {
 
-        var user = this.memberRepository.findBySignupid(member.getSignupid())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + member.getSignupid()));
+        var user = this.memberRepository.findBySignupId(member.getSignupId())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + member.getSignupId()));
 
         if (!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");

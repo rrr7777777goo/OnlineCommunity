@@ -14,7 +14,7 @@ public class ForRegisterTopic {
 
     public Topic toEntity(){
         return Topic.builder().name(this.name)
-                .insertdate(LocalDateTime.now())
+                .insertDate(LocalDateTime.now())
                 .build();
     }
 }

@@ -21,7 +21,8 @@ public class Member {
     private int id;
 
     // 아이디 (6 ~ 20자)
-    private String signupid;
+    @Column(name = "signupid")
+    private String signupId;
 
     // 비밀번호(8 ~ 20자)
     @JsonIgnore
@@ -35,7 +36,8 @@ public class Member {
     private MemberRole role;
 
     // 삽입날짜 (계정 생성 날짜를 의미)
-    private LocalDateTime insertdate;
+    @Column(name = "insertdate")
+    private LocalDateTime insertDate;
 
     // 계정 상태(LOCK이면 잠금, UNLOCK이면 비잠금 상태를 의미한다. 계정이 잠겨 있으면 그 계정은 사용할 수 없다.)
     @Enumerated(EnumType.STRING)
@@ -49,7 +51,7 @@ public class Member {
     }
 
     // 닉네임을 변경하기 위해서 사용하는 함수
-    public void changeNickname(String nickname) {
+    public void changeInformation(String nickname) {
         this.nickname = nickname;
     }
 
@@ -70,7 +72,7 @@ public class Member {
     }
 
     // 계정 잠금 해제
-    public void unLockAccount() {
+    public void unlockAccount() {
         if (this.role == MemberRole.ROLE_ADMIN) {
             throw new RuntimeException("관리자 계정은 잠금 관련 설정을 할 수 없습니다.");
         }
