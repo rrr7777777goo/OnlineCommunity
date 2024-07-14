@@ -1,0 +1,87 @@
+### 게시글 작성
+POST http://localhost:8085/post
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "topicId": 3,
+  "title": "음악 게시판에 관리자가 메세지를 남깁니다.",
+  "context": "안녕하세요!"
+}
+
+### 게시글 id를 기반으로 게시글 조회 (로그인을 하지 않아도 사용 가능)
+GET http://localhost:8085/post/information?id=13
+
+### 특정 주제에 해당하는 게시글들을 조회 (로그인을 하지 않아도 사용 가능,작성시간을 기준으로 내림차순 출력한다.)
+### title을 입력하면 title을 포함하는 제목을 가진 게시글들을 출력한다.
+### context를 입력하면 context를 포함하는 내용을 가진 게시글들만 출력한다.
+### title, context 둘 다 입력하면 title을 포함하는 제목을 가진 게시글들과 context를 포함하는 내용을 가진 게시들글을 출력한다.
+GET http://localhost:8085/post/list?size=10&page=0&topicid=3
+
+### 현재 로그인한 사용자가 지금까지 작성했던 게시글들을 조회 (작성시간을 기준으로 내림차순 출력한다.))
+GET http://localhost:8085/post/mylist?size=10&page=0
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 게시글 수정 (작성자 본인만 가능)
+PUT http://localhost:8085/post
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "id": 13,
+  "title": "수정한 게시글입니다.",
+  "context": "글을 수정하였습니다. 내용이 변경된점을 양해부탁드립니다."
+}
+
+
+### 원하는 게시글에 좋아요 누르기
+PUT http://localhost:8085/post/like?id=13
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 원하는 게시글에 싫어요 누르기
+PUT http://localhost:8085/post/dislike?id=13
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 게시글에 좋아요or싫어요 정보 조회
+GET http://localhost:8085/post/like?id=13
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 게시글에 좋아요 또는 싫어요 해제하기
+PUT http://localhost:8085/post/cancellike?id=13
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 게시글에 대한 신고글 작성
+POST http://localhost:8085/post/complaint
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "postId" : 13,
+  "context" : "신고합니다 신고합니다.!!!!!"
+}
+
+### 고유번호를 기반으로 게시글에 대한 신고글 조회 (관리자만 가능)
+GET http://localhost:8085/post/complaint/information?id=6
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 게시글에 대한 신고글 목록 조회 (관리자만 가능, 작성시간을 기준으로 내림차순 출력)
+GET http://localhost:8085/post/complaint/list?size=5&page=0
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 게시글에 대한 신고글 삭제 (관리자만 가능)
+DELETE http://localhost:8085/post/complaint
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "id" : 6
+}
+
+### 게시글 삭제 (작성자 본인과 관리자만 가능)
+DELETE http://localhost:8085/post
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "id": 12
+}

@@ -38,8 +38,8 @@ public class AuthController {
     public ResponseEntity<?> signin(@Validated @RequestBody Auth.SignIn request) {
         // 로그인용 API
         var member = this.memberService.authenticate(request);
-        var token = this.tokenProvider.generateToken(member.getId(), member.getSignupid(), member.getRole().getName());
-        log.info("user login -> " + request.getSignupid());
+        var token = this.tokenProvider.generateToken(member.getId(), member.getSignupId(), member.getRole().getName());
+        log.info("user login -> " + request.getSignupId());
 
         return ResponseEntity.ok(token);
     }

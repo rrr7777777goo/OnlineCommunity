@@ -1,0 +1,30 @@
+### 새로운 게시판 주제 생성 (관리자만 생성 가능, 이름 중복 불가능, 이름 길이 제한 : 2 이상 20 이하)
+POST http://localhost:8085/topic
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "name": "식물"
+}
+
+### 기존의 게시판 주제 이름 수정 (관리자만 수정 가능, 이름 중복 불가능, 이름 길이 제한 : 2 이상 20 이하)
+PUT http://localhost:8085/topic
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNTkyOTQ1LCJleHAiOjE3MjA1OTY1NDV9.PVc0drYMYCl4jJrp1tWrIKSlGB6-uNo_cIuXkJmfgtngGJYzISgte2S1gwiiLG1Mw4r_oExdyCouKldW7m1viQ
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "음악"
+}
+
+### 기존의 게시판 주제 삭제 (관리자만 삭제 가능, 삭제하면 해당 게시판의 모든 게시글들도 삭제가 됩니다.)
+DELETE http://localhost:8085/topic
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNTkyOTQ1LCJleHAiOjE3MjA1OTY1NDV9.PVc0drYMYCl4jJrp1tWrIKSlGB6-uNo_cIuXkJmfgtngGJYzISgte2S1gwiiLG1Mw4r_oExdyCouKldW7m1viQ
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+### 게시판 주제 조회 (이름 순으로 출력, keyword 항목을 추가하면 해당 키워드로 시작하는 주제들만 출력)
+GET http://localhost:8085/topic/list?size=10&page=0

@@ -1,4 +1,4 @@
-package com.onlinecommunity.domain.topic;
+package com.onlinecommunity.domain.post.complaint;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,27 +7,30 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.time.LocalDateTime;
 
 @Builder
-@Entity(name = "topic")
+@Entity(name = "complaint_post")
 @DynamicUpdate
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Topic {
+public class ComplaintPost {
     // 고유번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // 주제 이름
-    private String name;
+    // 게시글 아이디
+    @Column(name = "post_id")
+    private int postId;
 
-    // 생성날짜 (주제 생성 날짜를 의미)
+    // 사용자 아이디
+    @Column(name = "user_id")
+    private int userId;
+
+    // 신고 내용
+    private String context;
+
+    // 삽입날짜 (신고글 생성 날짜를 의미)
     @Column(name = "insertdate")
     private LocalDateTime insertDate;
-
-    // 이름 변경용 함수
-    public void changeName(String name) {
-        this.name = name;
-    }
 }
