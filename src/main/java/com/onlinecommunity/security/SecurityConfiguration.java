@@ -37,7 +37,11 @@ public class SecurityConfiguration {
                         "/auth/withdraw",
                         "/topic/list",
                         "/post/information",
-                        "/post/list"
+                        "/post/list",
+                        "/comment/information",
+                        "/comment/list",
+                        "/reply/information",
+                        "/reply/list"
                 ).permitAll().anyRequest().authenticated())
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

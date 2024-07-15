@@ -1,4 +1,4 @@
-package com.onlinecommunity.domain.post;
+package com.onlinecommunity.domain.comment;
 
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -7,23 +7,20 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ForRegisterPost {
+public class ForRegisterComment {
     @PositiveOrZero
-    private int topicId; // 주제
-    @Size(min=5, max=90)
-    private String title; // 제목
+    private int postId; // 게시글
+
     @Size(min=1, max=1000)
     private String context; // 내용
 
-    public Post toEntity(int userId) {
+    public Comment toEntity(int userId) {
         LocalDateTime nowTime = LocalDateTime.now();
 
-        return Post.builder()
-                .topicId(this.topicId)
+        return Comment.builder()
+                .postId(this.postId)
                 .userId(userId)
-                .title(this.title)
-                .context(this.context)
-                .viewCount(0)
+                .context(this.getContext())
                 .insertDate(nowTime)
                 .updateDate(nowTime)
                 .likeScore(0)

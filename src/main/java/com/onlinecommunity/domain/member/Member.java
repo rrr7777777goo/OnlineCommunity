@@ -45,7 +45,7 @@ public class Member {
 
     // 계정 잠금 상태 여부 확인
     public void checkStatus() {
-        if(status == MemberStatus.LOCK) {
+        if (status == MemberStatus.LOCK) {
             throw new RuntimeException("현재 계정은 잠금상태입니다. 관리자에게 문의하십시오");
         }
     }

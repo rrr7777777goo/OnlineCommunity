@@ -5,6 +5,7 @@ import com.onlinecommunity.domain.post.ForRegisterPost;
 import com.onlinecommunity.domain.post.ForUpdatePost;
 import com.onlinecommunity.domain.post.complaint.ForDeleteComplaintPost;
 import com.onlinecommunity.domain.post.complaint.ForRegisterComplaintPost;
+import com.onlinecommunity.domain.post.score.ForRegisterScorePost;
 import com.onlinecommunity.service.PostService;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class PostController {
     }
 
     // 내가 작성한 게시글 목록 조회, 작성시간을 기준으로 내림차순 출력
-    @GetMapping("mylist")
+    @GetMapping("/mylist")
     public ResponseEntity<?> getMyPosts(Pageable pageable) {
         var result = this.postService.getMyPosts(pageable);
         return ResponseEntity.ok(result);
@@ -60,42 +61,42 @@ public class PostController {
     }
 
     // 게시글에 좋아요 (한 계정당 1번만 가능, 좋아요와 싫어요 둘 중 하나만 선택 가능하며 추후에 변경 가능)
-    @PutMapping("like")
-    public ResponseEntity<?> likePost(@RequestParam @PositiveOrZero int id) {
-        var result = this.postService.likePost(id, true);
+    @PutMapping("/like")
+    public ResponseEntity<?> likePost(@Validated @RequestBody ForRegisterScorePost request) {
+        var result = this.postService.likePost(request.getId(), true);
         return ResponseEntity.ok(result);
     }
 
     // 특정 게시글에 대해 사용자가 좋아요 또는 싫어요를 눌렀는지 정보 조회
-    @GetMapping("like")
+    @GetMapping("/like")
     public ResponseEntity<?> getScorePost(@RequestParam @PositiveOrZero int id) {
         var result = this.postService.getScorePost(id);
         return ResponseEntity.ok(result);
     }
 
     // 게시글에 싫어요 (한 계정당 1번만 가능, 좋아요와 싫어요 둘 중 하나만 선택 가능하며 추후에 변경 가능)
-    @PutMapping("dislike")
-    public ResponseEntity<?> dislikePost(@RequestParam @PositiveOrZero int id) {
-        var result = this.postService.likePost(id, false);
+    @PutMapping("/dislike")
+    public ResponseEntity<?> dislikePost(@Validated @RequestBody ForRegisterScorePost request) {
+        var result = this.postService.likePost(request.getId(), false);
         return ResponseEntity.ok(result);
     }
 
     // 게시글에 눌렀던 좋아요 or 싫어요 취소
-    @PutMapping("cancellike")
-    public ResponseEntity<?> cancellikePost(@RequestParam @PositiveOrZero int id) {
-        var result = this.postService.cancellikePost(id);
+    @PutMapping("/cancel-like")
+    public ResponseEntity<?> cancellikePost(@Validated @RequestBody ForRegisterScorePost request) {
+        var result = this.postService.cancelLikePost(request.getId());
         return ResponseEntity.ok(result);
     }
 
     // 게시글에 대한 신고글 작성
-    @PostMapping("complaint")
+    @PostMapping("/complaint")
     public ResponseEntity<?> complaintPost(@Validated @RequestBody ForRegisterComplaintPost request) {
         var result = this.postService.complaintPost(request);
         return ResponseEntity.ok(result);
     }
 
     // 게시글에 대한 신고글 조회 (관리자만 가능)
-    @GetMapping("complaint/information")
+    @GetMapping("/complaint/information")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getComplaintPost(@RequestParam @PositiveOrZero int id) {
         var result = this.postService.getComplaintPost(id);
@@ -103,7 +104,7 @@ public class PostController {
     }
 
     // 게시글에 대한 신고글 목록 조회 (관리자만 가능, 등록날짜를 기준으로 내림차순 조회)
-    @GetMapping("complaint/list")
+    @GetMapping("/complaint/list")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getComplaintPosts(Pageable pageable) {
         var result = this.postService.getComplaintPosts(pageable);
@@ -111,7 +112,7 @@ public class PostController {
     }
 
     // 게시글에 대한 신고글 삭제 (관리자만 가능)
-    @DeleteMapping("complaint")
+    @DeleteMapping("/complaint")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteComplaintPost(@Validated @RequestBody ForDeleteComplaintPost request) {
         var result = this.postService.deleteComplaintPost(request);

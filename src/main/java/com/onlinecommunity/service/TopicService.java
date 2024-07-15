@@ -47,7 +47,7 @@ public class TopicService {
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 주제 ID 입니다. -> " + request.getId()));
 
         boolean exists = this.topicRepository.existsByName(request.getName());
-        if (exists) {
+        if ((topic.getName().compareTo(request.getName()) != 0) && exists) {
             throw new RuntimeException("이미 존재하는 이름입니다. -> " + request.getName());
         }
 

@@ -7,11 +7,8 @@ import com.onlinecommunity.domain.post.complaint.ComplaintPost;
 import com.onlinecommunity.domain.post.complaint.ForDeleteComplaintPost;
 import com.onlinecommunity.domain.post.complaint.ForRegisterComplaintPost;
 import com.onlinecommunity.domain.post.score.ScorePost;
-import com.onlinecommunity.domain.post.score.ScorePostStatus;
-import com.onlinecommunity.repository.ComplaintPostRepository;
-import com.onlinecommunity.repository.PostRepository;
-import com.onlinecommunity.repository.ScorePostRepository;
-import com.onlinecommunity.repository.TopicRepository;
+import com.onlinecommunity.domain.ScoreStatus;
+import com.onlinecommunity.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,8 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -67,8 +62,8 @@ public class PostService {
     // 게시글 저장
     public Post registerPost(ForRegisterPost request) {
 
-        boolean exists = topicRepository.existsById(request.getTopicId());
-        if(!exists) {
+        boolean exists = this.topicRepository.existsById(request.getTopicId());
+        if (!exists) {
             throw new RuntimeException("존재하지 않는 주제 ID입니다. -> " + request.getTopicId());
         }
 
@@ -89,29 +84,29 @@ public class PostService {
     }
 
     // 게시글 목록 조회 (로그인 없이도 가능) , 작성시간을 기준으로 내림차순 출력, keyword로 검색시 keyword로 시작하는 제목들만 조회 가능
-    public Page<ForResponsePost> getPosts(Pageable pageable, int topicid, String title, String context) {
-        boolean exists = topicRepository.existsById(topicid);
-        if(!exists) {
-            throw new RuntimeException("존재하지 않는 주제 ID입니다. -> " + topicid);
+    public Page<ForResponsePost> getPosts(Pageable pageable, int topicId, String title, String context) {
+        boolean exists = this.topicRepository.existsById(topicId);
+        if (!exists) {
+            throw new RuntimeException("존재하지 않는 주제 ID입니다. -> " + topicId);
         }
 
         var keywordTitle = getKeyword(title);
         var keywordContext = getKeyword(context);
 
-        if(keywordTitle.compareTo("") != 0 && keywordContext.compareTo("") != 0) {
-            var resultForTitleAndContext = this.postRepository.findAllByTitleContainingOrContextContainingOrderByInsertdateDescAndReturnForResponsePost(pageable, topicid, keywordTitle, keywordContext);
+        if (keywordTitle.compareTo("") != 0 && keywordContext.compareTo("") != 0) {
+            var resultForTitleAndContext = this.postRepository.findAllByTitleContainingOrContextContainingOrderByInsertDateDescAndReturnForResponsePost(pageable, topicId, keywordTitle, keywordContext);
             return resultForTitleAndContext;
         } else if (keywordContext.compareTo("") != 0) {
-            var resultForContext = this.postRepository.findAllByContextContainingOrderByInsertdateDescAndReturnForResponsePost(pageable, topicid, keywordContext);
+            var resultForContext = this.postRepository.findAllByContextContainingOrderByInsertDateDescAndReturnForResponsePost(pageable, topicId, keywordContext);
             return resultForContext;
         } else {
-            var resultForTitle = this.postRepository.findAllByTitleContainingOrderByInsertdateDescAndReturnForResponsePost(pageable, topicid, keywordTitle);
+            var resultForTitle = this.postRepository.findAllByTitleContainingOrderByInsertDateDescAndReturnForResponsePost(pageable, topicId, keywordTitle);
             return resultForTitle;
         }
     }
 
     public Page<ForResponsePost> getMyPosts(Pageable pageable) {
-        var result = this.postRepository.findAllByUseridAndReturnForResponsePost(pageable, getIdInterface().getId());
+        var result = this.postRepository.findAllByUserIdAndReturnForResponsePost(pageable, getIdInterface().getId());
         return result;
     }
 
@@ -131,25 +126,25 @@ public class PostService {
     // 게시글에 좋아요 또는 싫어요 (한 계정당 1번만 가능, 좋아요와 싫어요 둘 중 하나만 선택 가능하며 추후에 변경 가능)
     @Transactional
     public ForResponsePost likePost(int id, boolean isLike) {
-        var userid = getIdInterface().getId();
-        var scorepost = this.scorePostRepository.findAllByPostIdAndUserId(id, userid);
+        var userId = getIdInterface().getId();
+        var scorePost = this.scorePostRepository.findAllByPostIdAndUserId(id, userId);
 
-        if(scorepost == null) {
+        if (scorePost == null) {
             var post = this.postRepository.findAllById(id)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글 ID입니다. -> " + id));
 
-            if(isLike) {
+            if (isLike) {
                 post.plusLikeScore();
             } else {
                 post.plusDislikeScore();
             }
             this.scorePostRepository.save(ScorePost.builder()
                     .postId(id)
-                    .userId(userid)
-                    .status(isLike ? ScorePostStatus.SCORE_LIKE : ScorePostStatus.SCORE_DISLIKE)
+                    .userId(userId)
+                    .status(isLike ? ScoreStatus.SCORE_LIKE : ScoreStatus.SCORE_DISLIKE)
                     .build());
         } else {
-            scorepost.changeScore(isLike);
+            scorePost.changeScore(isLike);
             var post = this.postRepository.findAllById(id)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글 ID입니다. -> " + id));
             post.changeLikeScore(isLike);
@@ -161,13 +156,13 @@ public class PostService {
     }
 
     // 게시글에 사용자가 좋아요 또는 싫어요를 눌렀는지 조회
-    public Object getScorePost(int id) {
+    public ScorePost getScorePost(int id) {
         var userInterface = getIdInterface();
         var result = this.scorePostRepository.findAllByPostIdAndUserId(id, userInterface.getId());
 
-        if(result == null) {
+        if (result == null) {
             var exists = this.postRepository.existsAllById(id);
-            if(!exists) {
+            if (!exists) {
                 throw new RuntimeException("존재하지 않는 게시글 ID입니다. -> " + id);
             } else {
                 throw new RuntimeException("현재 사용자는 해당 글에 좋아요, 싫어요 둘 중 어느것도 선택하지 않은 상태입니다. -> " + userInterface.getSignupId());
@@ -179,13 +174,13 @@ public class PostService {
 
     // 게시글에 눌렀던 좋아요 or 싫어요 취소
     @Transactional
-    public ForResponsePost cancellikePost(int id) {
+    public ForResponsePost cancelLikePost(int id) {
         var userInterface = getIdInterface();
-        var scorepost = this.scorePostRepository.findAllByPostIdAndUserId(id, userInterface.getId());
+        var scorePost = this.scorePostRepository.findAllByPostIdAndUserId(id, userInterface.getId());
 
-        if(scorepost == null) {
+        if (scorePost == null) {
             var exists = this.postRepository.existsAllById(id);
-            if(!exists) {
+            if (!exists) {
                 throw new RuntimeException("존재하지 않는 게시글 ID입니다. -> " + id);
             } else {
                 throw new RuntimeException("현재 사용자는 해당 글에 좋아요, 싫어요 둘 중 어느것도 선택하지 않은 상태입니다. -> " + userInterface.getSignupId());
@@ -193,12 +188,12 @@ public class PostService {
         } else {
             var post = this.postRepository.findAllById(id)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글 ID입니다. -> " + id));
-            if(scorepost.getStatus() == ScorePostStatus.SCORE_LIKE) {
+            if (scorePost.getStatus() == ScoreStatus.SCORE_LIKE) {
                 post.minusLikeScore();
             } else {
                 post.minusDislikeScore();
             }
-            this.scorePostRepository.delete(scorepost);
+            this.scorePostRepository.delete(scorePost);
         }
 
         var result = this.postRepository.findAllByIdAndReturnForResponsePost(id)
@@ -209,7 +204,7 @@ public class PostService {
     // 게시글에 대한 신고글 작성
     public ComplaintPost complaintPost(ForRegisterComplaintPost request) {
         var exists = this.postRepository.existsAllById(request.getPostId());
-        if(!exists) {
+        if (!exists) {
             throw new RuntimeException("존재하지 않는 게시글 ID입니다. -> " + request.getPostId());
         }
 

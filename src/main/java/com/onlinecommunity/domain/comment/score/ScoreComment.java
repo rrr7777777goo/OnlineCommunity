@@ -1,4 +1,4 @@
-package com.onlinecommunity.domain.post.score;
+package com.onlinecommunity.domain.comment.score;
 
 import com.onlinecommunity.domain.ScoreStatus;
 import jakarta.persistence.*;
@@ -6,21 +6,21 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Builder
-@Entity(name = "score_post")
+@Entity(name = "score_comment")
 @DynamicUpdate
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScorePost {
+public class ScoreComment {
     // 고유번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // 게시글 아이디
-    @Column(name = "post_id")
-    private int postId;
+    // 댓글 아이디
+    @Column(name = "comment_id")
+    private int commentId;
 
     // 사용자 아이디
     @Column(name = "user_id")
@@ -32,5 +32,4 @@ public class ScorePost {
     public void changeScore(boolean isLike) {
         status = ScoreStatus.changeScoreStatus(status, isLike);
     }
-
 }
