@@ -1,15 +1,13 @@
-package com.onlinecommunity.domain.post;
+package com.onlinecommunity.domain.comment;
 
 import com.onlinecommunity.domain.member.MemberRole;
 
 import java.time.LocalDateTime;
 
-public interface ForResponsePost {
+public interface ForResponseComment {
     Integer getId();
 
-    Integer getTopicId();
-
-    String getTopicName();
+    Integer getPostId();
 
     Integer getUserId();
 
@@ -17,11 +15,8 @@ public interface ForResponsePost {
 
     MemberRole getRole();
 
-    String getTitle();
 
     String getContext();
-
-    Integer getViewCount();
 
     LocalDateTime getInsertDate();
 

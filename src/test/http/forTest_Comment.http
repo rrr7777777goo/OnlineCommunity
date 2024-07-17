@@ -1,0 +1,97 @@
+### 댓글 작성
+POST http://localhost:8085/comment
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjE3LCJleHAiOjE3MjExMTYyMTd9.fT5GjTGJjrfctMnoZkou2pg9OzlNaHgrdumHXhRlZQ2weFYZMwnlUQAtskJOP8vWfgFjDA33CEsGJsifMAWAGg
+Content-Type: application/json
+
+{
+  "postId": 16,
+  "context": "댓글을 남겨봅니다"
+}
+
+### 댓글 id를 기반으로 댓글 조회 (로그인을 하지 않아도 사용 가능)
+GET http://localhost:8085/comment/information?id=2
+
+### 특정 게시글에 해당하는 댓글들을 조회 (로그인을 하지 않아도 사용 가능,작성시간을 기준으로 내림차순 출력한다.)
+GET http://localhost:8085/comment/list?size=10&page=0&postid=16
+
+### 현재 로그인한 사용자가 지금까지 작성했던 댓글들을 조회 (작성시간을 기준으로 내림차순 출력한다.))
+GET http://localhost:8085/comment/mylist?size=10&page=0
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjE3LCJleHAiOjE3MjExMTYyMTd9.fT5GjTGJjrfctMnoZkou2pg9OzlNaHgrdumHXhRlZQ2weFYZMwnlUQAtskJOP8vWfgFjDA33CEsGJsifMAWAGg
+
+### 댓글 수정 (작성자 본인만 가능)
+PUT http://localhost:8085/comment
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMTExMjU2MCwiZXhwIjoxNzIxMTE2MTYwfQ.gbLQYGQntix1XYmD3Cl1PJPwqVod6ZrsddXgGXdSzJN7opFvuUvzKI68Y99JsU93kSmXJQYfzY-Pex9GPq2uDg
+Content-Type: application/json
+
+{
+  "id": 4,
+  "context": "마지막 댓글"
+}
+
+
+### 원하는 댓글에 좋아요 누르기
+PUT http://localhost:8085/comment/like
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjE3LCJleHAiOjE3MjExMTYyMTd9.fT5GjTGJjrfctMnoZkou2pg9OzlNaHgrdumHXhRlZQ2weFYZMwnlUQAtskJOP8vWfgFjDA33CEsGJsifMAWAGg
+Content-Type: application/json
+
+{
+  "id": 16
+}
+
+### 원하는 댓글에 싫어요 누르기
+PUT http://localhost:8085/comment/dislike
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMTExMjU4NSwiZXhwIjoxNzIxMTE2MTg1fQ.Yll0zyxHIyLabtlPz0kiSTBjS7IH3fPxwiPLmK57nOBc7uWrunsbRbe74Z4wSgk88g2Mh2-YOW5XPwinL0ICSg
+Content-Type: application/json
+
+{
+  "id": 16
+}
+
+### 댓글에 좋아요or싫어요 정보 조회
+GET http://localhost:8085/comment/like?id=2
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+
+### 댓글에 좋아요 또는 싫어요 해제하기
+PUT http://localhost:8085/comment/cancel-like
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Content-Type: application/json
+
+{
+  "id": 16
+}
+
+### 댓글에 대한 신고글 작성
+POST http://localhost:8085/comment/complaint
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMTExMjU4NSwiZXhwIjoxNzIxMTE2MTg1fQ.Yll0zyxHIyLabtlPz0kiSTBjS7IH3fPxwiPLmK57nOBc7uWrunsbRbe74Z4wSgk88g2Mh2-YOW5XPwinL0ICSg
+Content-Type: application/json
+
+{
+  "commentId" : 3,
+  "context" : "해당 댓글을 신고하겠습니다."
+}
+
+### 고유번호를 기반으로 댓글에 대한 신고글 조회 (관리자만 가능)
+GET http://localhost:8085/comment/complaint/information?id=1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjA2LCJleHAiOjE3MjExMTYyMDZ9.hGlp0PbtEBG3eKl6iggyRd-F5pTUw7C6wohkHomcNa8JsN8_zB2ChsvuHYCv1uUOjFY8PCH8sasWHZQwWryT3A
+
+### 댓글에 대한 신고글 목록 조회 (관리자만 가능, 작성시간을 기준으로 내림차순 출력)
+GET http://localhost:8085/comment/complaint/list?size=5&page=0
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjA2LCJleHAiOjE3MjExMTYyMDZ9.hGlp0PbtEBG3eKl6iggyRd-F5pTUw7C6wohkHomcNa8JsN8_zB2ChsvuHYCv1uUOjFY8PCH8sasWHZQwWryT3A
+
+### 댓글에 대한 신고글 삭제 (관리자만 가능)
+DELETE http://localhost:8085/comment/complaint
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjA2LCJleHAiOjE3MjExMTYyMDZ9.hGlp0PbtEBG3eKl6iggyRd-F5pTUw7C6wohkHomcNa8JsN8_zB2ChsvuHYCv1uUOjFY8PCH8sasWHZQwWryT3A
+Content-Type: application/json
+
+{
+  "id" : 2
+}
+
+### 댓글 삭제 (작성자 본인과 관리자만 가능)
+DELETE http://localhost:8085/comment
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjE3LCJleHAiOjE3MjExMTYyMTd9.fT5GjTGJjrfctMnoZkou2pg9OzlNaHgrdumHXhRlZQ2weFYZMwnlUQAtskJOP8vWfgFjDA33CEsGJsifMAWAGg
+Content-Type: application/json
+
+{
+  "id": 3
+}

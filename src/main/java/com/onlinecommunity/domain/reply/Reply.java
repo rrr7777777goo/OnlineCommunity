@@ -1,4 +1,4 @@
-package com.onlinecommunity.domain.post;
+package com.onlinecommunity.domain.reply;
 
 import com.onlinecommunity.domain.ScoreStatus;
 import jakarta.persistence.*;
@@ -8,35 +8,28 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.time.LocalDateTime;
 
 @Builder
-@Entity(name = "post")
+@Entity(name = "reply")
 @DynamicUpdate
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Reply {
     // 고유번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // 주제 아이디
-    @Column(name = "topic_id")
-    private int topicId;
+    // 댓글 아이디
+    @Column(name = "comment_id")
+    private int commentId;
 
     // 사용자 아이디
     @Column(name = "user_id")
     private int userId;
 
-    // 제목
-    private String title;
-
     // 내용
     private String context;
-
-    // 조회수
-    @Column(name = "viewcount")
-    private Integer viewCount;
 
     // 삽입날짜 (게시글 생성 날짜를 의미)
     @Column(name = "insertdate")
@@ -54,12 +47,7 @@ public class Post {
     @Column(name = "dislikescore")
     private int dislikeScore;
 
-    public void plusViewCount() {
-        ++viewCount;
-    }
-
-    public void updatePost(String title, String context) {
-        this.title = title;
+    public void updateComment(String context) {
         this.context = context;
         updateDate = LocalDateTime.now();
     }

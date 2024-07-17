@@ -39,9 +39,9 @@ public class MemberService {
     }
 
     // 아이디를 기반으로 유저 정보(고유번호, 아이디) 가져오기
-    public Auth.IdInterface loadUserBySignupid(String signupid) {
-        var member = this.memberRepository.findBySignupId(signupid)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 ID입니다. -> " + signupid));
+    public Auth.IdInterface loadUserBySignupid(String signupId) {
+        var member = this.memberRepository.findBySignupId(signupId)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 ID입니다. -> " + signupId));
         member.checkStatus(); // 계정 잠금여부 확인
 
         return new Auth.IdInterface() {
@@ -62,7 +62,7 @@ public class MemberService {
         var user = this.memberRepository.findBySignupId(member.getSignupId())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 ID입니다. -> " + member.getSignupId()));
 
-        if(!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
+        if (!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 

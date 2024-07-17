@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "signupId": "user002",
-  "password": "abcd001!?",
-  "nickname": "반갑습니다"
+  "password": "asdf1234!@#",
+  "nickname": "삶은계란"
 }
 
 ### 관리자 회원가입 (아이디 중복 X, 아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.) (닉네임 중복 X, 길이 제한은 2이상 12이하이다.)
@@ -15,7 +15,7 @@ Content-Type: application/json
 {
   "signupId": "admin002",
   "password": "admin0101",
-  "nickname": "ADMIN002"
+  "nickname": "관리자2호"
 }
 
 ### 로그인 (아이디 길이 제한은 6이상 20이하이다.) (패스워드 길이제한은 8이상 20이하이다.)
@@ -29,42 +29,42 @@ Content-Type: application/json
 
 ### 현재 로그인중인 사용자 정보 가져오기 (비밀번호 같은 민감한 정보는 반환되지 않습니다.)
 GET http://localhost:8085/auth/signin-information
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEyNjE3LCJleHAiOjE3MjExMTYyMTd9.fT5GjTGJjrfctMnoZkou2pg9OzlNaHgrdumHXhRlZQ2weFYZMwnlUQAtskJOP8vWfgFjDA33CEsGJsifMAWAGg
 
 ### 사용자 고유 번호를 기반으로 다른 사용자 정보 가져오기 (로그인 필요 x)
-GET http://localhost:8085/auth/information?id=4
+GET http://localhost:8085/auth/information?id=31
 
 ### 사용자 정보 변경 (현재는 닉네임 변경을 위해 사용된다.) (닉네임 중복 X, 길이 제한은 2이상 12이하이다.)
 PUT http://localhost:8085/auth/information
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMTEwOTkzOSwiZXhwIjoxNzIxMTEzNTM5fQ.MBCnKqBW7u27jslv4x9VZA5oMVKUiNX2gQau9TEs6aj7H12FzhDofM-54kYojoBpwvcAJGzoSYPCOBdHP1NBuQ
 Content-Type: application/json
 
 {
-  "nickname": "관리자001"
+  "nickname": "떡볶이"
 }
 
 ### 패스워드 변경 (패스워드 길이제한은 8이상 20이하이다.)
 PUT http://localhost:8085/auth/password
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNTkyOTQ1LCJleHAiOjE3MjA1OTY1NDV9.PVc0drYMYCl4jJrp1tWrIKSlGB6-uNo_cIuXkJmfgtngGJYzISgte2S1gwiiLG1Mw4r_oExdyCouKldW7m1viQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTcyMTEwOTkzOSwiZXhwIjoxNzIxMTEzNTM5fQ.MBCnKqBW7u27jslv4x9VZA5oMVKUiNX2gQau9TEs6aj7H12FzhDofM-54kYojoBpwvcAJGzoSYPCOBdHP1NBuQ
 Content-Type: application/json
 
 {
-  "password": "admin0101"
+  "password": "asdf1234!@#"
 }
 
 
 ### 유저 계정 잠금 (아이디 길이 제한은 6이상 20이하이다.) (관리자 계정으로 유저 계정을 잠그는 것만 가능)
 PUT http://localhost:8085/auth/lock
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNzExMDAxLCJleHAiOjE3MjA3MTQ2MDF9.9Jg0TL1JI5-4HhzarwrU-XOBsm3SqrvltHZ_3s9XkmDhnAHcsGl4tpjyizHy_qy6RhF9pJfHU1oVJZR_h5iv_Q
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEwMDAwLCJleHAiOjE3MjExMTM2MDB9.1OmWMdTBn1GbdvhXnxdhuG29uq7uIAPI_kTXS_DpWSRDtS-njwADK7vQ4T79HGXF8X0hLlCGnmJ1dXk4srYkpw
 Content-Type: application/json
 
 {
-  "signupId": "admin001"
+  "signupId": "user001"
 }
 
 ### 유저 계정 잠금 해제 (아이디 길이 제한은 6이상 20이하이다.) (관리자 계정으로 유저 계정을 잠금 해제하는 것만 가능)
 PUT http://localhost:8085/auth/unlock
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIwNTkyOTQ1LCJleHAiOjE3MjA1OTY1NDV9.PVc0drYMYCl4jJrp1tWrIKSlGB6-uNo_cIuXkJmfgtngGJYzISgte2S1gwiiLG1Mw4r_oExdyCouKldW7m1viQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAwMiIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNzIxMTEwMDAwLCJleHAiOjE3MjExMTM2MDB9.1OmWMdTBn1GbdvhXnxdhuG29uq7uIAPI_kTXS_DpWSRDtS-njwADK7vQ4T79HGXF8X0hLlCGnmJ1dXk4srYkpw
 Content-Type: application/json
 
 {
@@ -76,6 +76,6 @@ DELETE http://localhost:8085/auth/withdraw
 Content-Type: application/json
 
 {
-  "signupId": "user001",
-  "password": "abcd001!?"
+  "signupId": "y2y2z9z9",
+  "password": "admin0101"
 }

@@ -33,7 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
                     "where c.id = a.topicId and a.userId = ?1\n" +
                     "group by a.id\n" +
                     "order by a.insertDate desc")
-    Page<ForResponsePost> findAllByUseridAndReturnForResponsePost(Pageable pageable, int userId);
+    Page<ForResponsePost> findAllByUserIdAndReturnForResponsePost(Pageable pageable, int userId);
 
     @Query(value=
             "select a.id as id, a.topicId as topicId, c.name as topicName, a.userId as userId, d.nickname as nickname, d.role as role, a.title as title, a.context as context, a.viewCount as viewCount, a.likeScore as likeScore, a.dislikeScore as dislikeScore, a.insertDate as insertDate, a.updateDate as updateDate \n" +
@@ -43,7 +43,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
                     "where a.topicId = ?1 and upper(a.title) like upper(concat('%', concat(?2, '%'))) and c.id = a.topicId and a.userId = d.id\n" +
                     "group by a.id\n" +
                     "order by a.insertDate desc")
-    Page<ForResponsePost> findAllByTitleContainingOrderByInsertdateDescAndReturnForResponsePost(Pageable pageable, int topic, String title);
+    Page<ForResponsePost> findAllByTitleContainingOrderByInsertDateDescAndReturnForResponsePost(Pageable pageable, int topic, String title);
 
     @Query(value=
             "select a.id as id, a.topicId as topicId, c.name as topicName, a.userId as userId, d.nickname as nickname, d.role as role, a.title as title, a.context as context, a.viewCount as viewCount, a.likeScore as likeScore, a.dislikeScore as dislikeScore, a.insertDate as insertDate, a.updateDate as updateDate \n" +
@@ -53,7 +53,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
                     "where a.topicId = ?1 and upper(a.context) like upper(concat('%', concat(?2, '%'))) and c.id = a.topicId and a.userId = d.id\n" +
                     "group by a.id\n" +
                     "order by a.insertDate desc")
-    Page<ForResponsePost> findAllByContextContainingOrderByInsertdateDescAndReturnForResponsePost(Pageable pageable, int topic, String context);
+    Page<ForResponsePost> findAllByContextContainingOrderByInsertDateDescAndReturnForResponsePost(Pageable pageable, int topic, String context);
 
     @Query(value=
             "select a.id as id, a.topicId as topicId, c.name as topicName, a.userId as userId, d.nickname as nickname, d.role as role, a.title as title, a.context as context, a.viewCount as viewCount, a.likeScore as likeScore, a.dislikeScore as dislikeScore, a.insertDate as insertDate, a.updateDate as updateDate \n" +
@@ -63,5 +63,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
                     "where a.topicId = ?1 and (upper(a.title) like upper(concat('%', concat(?2, '%'))) or upper(a.context) like upper(concat('%', concat(?3, '%')))) and c.id = a.topicId and a.userId = d.id\n" +
                     "group by a.id\n" +
                     "order by a.insertDate desc")
-    Page<ForResponsePost> findAllByTitleContainingOrContextContainingOrderByInsertdateDescAndReturnForResponsePost(Pageable pageable, int topic, String title, String context);
+    Page<ForResponsePost> findAllByTitleContainingOrContextContainingOrderByInsertDateDescAndReturnForResponsePost(Pageable pageable, int topic, String title, String context);
 }
